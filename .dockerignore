@@ -1,0 +1,10 @@
+**
+!app.py
+!requirements.txt
+!requirements-production.txt
+!templates/
+!templates/**
+!static/
+!static/**
+!tests/
+!tests/test_currency.py

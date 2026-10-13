@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f7f2">
+    <meta name="description" content="Convertisseur de devises indicatif, précis et disponible hors ligne.">
+    <title>Cambio — Convertisseur de devises</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="wordmark" href="/" aria-label="Cambio, accueil">
+          <span class="brand-mark" aria-hidden="true">↕</span><span>cambio<span class="wordmark-period">.</span></span>
+        </a>
+        <div class="topbar-right">
+          <span class="offline-chip"><span class="status-dot"></span>Hors ligne, prêt</span>
+          <span class="topbar-label">CONVERTISSEUR · ISO 4217</span>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="page-heading">
+          <div class="eyebrow"><span class="eyebrow-line"></span>CHANGE DE DEVISES <span class="eyebrow-index">01 / 01</span></div>
+          <h1>Le bon montant.<br><span>La bonne précision.</span></h1>
+          <p class="intro-copy">Une conversion claire, calculée à la décimale près.</p>
+        </div>
+
+        <section class="converter" aria-label="Convertisseur de devises">
+          <div class="converter-topline">
+            <div class="section-id"><span>01</span><span>CONVERSION</span></div>
+            <span class="indicative-label"><span class="check-mark">✓</span> Taux indicatif</span>
+          </div>
+
+          <div class="conversion-fields">
+            <div class="money-field source-field">
+              <div class="field-heading"><label for="amount">Vous envoyez</label><span>DEVISE SOURCE</span></div>
+              <div class="field-control">
+                <input id="amount" aria-label="Montant à convertir" inputmode="decimal" autocomplete="off" value="1500">
+                <label class="currency-select"><span class="sr-only">Devise source</span><span class="currency-code" id="source-code-label">JPY</span>
+                  <select id="source" aria-label="Devise source">
+                    {% for currency in currencies %}<option value="{{ currency.alpha }}" {% if currency.alpha == 'JPY' %}selected{% endif %}>{{ currency.alpha }} · {{ currency.name }}</option>{% endfor %}
+                  </select><span class="select-chevron" aria-hidden="true">⌄</span>
+                </label>
+              </div>
+              <div class="field-foot"><span id="source-name">Yen japonais</span><span id="source-precision">0 décimale</span></div>
+            </div>
+
+            <button class="swap-button" id="swap" type="button" aria-label="Inverser les devises" title="Inverser les devises">↕</button>
+
+            <div class="money-field target-field">
+              <div class="field-heading"><span>Vous recevez</span><span>DEVISE CIBLE</span></div>
+              <div class="field-control">
+                <output class="amount-output" id="result" aria-live="polite" aria-label="Montant converti">—</output>
+                <label class="currency-select"><span class="sr-only">Devise cible</span><span class="currency-code" id="target-code-label">EUR</span>
+                  <select id="target" aria-label="Devise cible">
+                    {% for currency in currencies %}<option value="{{ currency.alpha }}" {% if currency.alpha == 'EUR' %}selected{% endif %}>{{ currency.alpha }} · {{ currency.name }}</option>{% endfor %}
+                  </select><span class="select-chevron" aria-hidden="true">⌄</span>
+                </label>
+              </div>
+              <div class="field-foot"><span id="target-name">Euro</span><span id="target-precision">2 décimales</span></div>
+            </div>
+          </div>
+
+          <p class="error-message" id="error" role="alert" hidden></p>
+          <p class="hint-message" id="hint" hidden></p>
+
+          <div class="quote-strip">
+            <div class="quote-rate">
+              <div class="quote-icon" aria-hidden="true">→</div>
+              <div><span class="quote-label">TAUX UTILISÉ</span><strong id="rate">En attente du montant</strong></div>
+            </div>
+            <div class="quote-meta">
+              <div class="meta-item"><span aria-hidden="true">◎</span><span id="source-name-meta">Données locales</span></div>
+              <div class="meta-item"><span aria-hidden="true">◷</span><span id="updated-at">Actualisé le 13 oct. 2026</span></div>
+            </div>
+          </div>
+
+          <div class="stale-banner" id="stale-banner" role="status" hidden></div>
+          <div class="disclaimer"><span aria-hidden="true">⌁</span><span>Jeu de démonstration local. Conversion indicative, non garantie pour une transaction.</span></div>
+        </section>
+
+        <section class="precision-note" aria-label="Précision des devises">
+          <div class="precision-title"><span class="precision-mark" aria-hidden="true">∑</span><div><span class="eyebrow">PRÉCISION ISO 4217</span><h2>Chaque devise a son propre rythme.</h2></div></div>
+          <div class="precision-examples">
+            <div><span class="precision-code">JPY</span><strong>0</strong><span>décimale</span></div>
+            <div><span class="precision-code">EUR</span><strong>2</strong><span>décimales</span></div>
+            <div><span class="precision-code">KWD</span><strong>3</strong><span>décimales</span></div>
+          </div>
+        </section>
+        <footer class="page-footer"><span>Arrondi HALF_UP à la précision ISO de la devise cible.</span><span>CAMBIO <span class="footer-star">✳</span> BUILT FOR CLARITY</span></footer>
+      </main>
+    </div>
+  </body>
+</html>
